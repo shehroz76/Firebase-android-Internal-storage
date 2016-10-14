@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "440141677029",
+    "firebase_url": "https://internal-storage-f90ab.firebaseio.com",
+    "project_id": "internal-storage-f90ab",
+    "storage_bucket": "internal-storage-f90ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:440141677029:android:153c14042460e305",
+        "android_client_info": {
+          "package_name": "android.msk.com.internalstorage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "440141677029-6ha23qo97mrau64ft0g1t4hfevh9jidq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2sCE_GzTsx3nnvgrXbt_-CjKUiENzc30"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
