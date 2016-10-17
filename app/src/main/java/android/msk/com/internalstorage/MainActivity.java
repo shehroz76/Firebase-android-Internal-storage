@@ -1,8 +1,12 @@
 package android.msk.com.internalstorage;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,8 +19,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -32,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     private StorageReference mStorageReference;
     private DatabaseReference mDatabaseReference;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,14 +93,56 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                    String imageURL = taskSnapshot.getDownloadUrl().toString();
-                    mDatabaseReference.push().setValue(imageURL);
+                    Uri imageURL = taskSnapshot.getDownloadUrl();
+
+
+                     DatabaseReference imageData = mDatabaseReference.push();
+
+                    imageData.child("pic").setValue(imageURL.toString());
 
                     mProgressDialog.dismiss();
 
                     Toast.makeText(MainActivity.this , "Updloded" , Toast.LENGTH_SHORT).show();
 
 
+
+
+
+                    Picasso.with(MainActivity.this)
+                            .load(imageURL)
+                            .into(new Target() {
+                                      @Override
+                                      public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                          try {
+                                              String root = Environment.getExternalStorageDirectory().toString();
+                                              File myDir = new File(root + "/Myimages");
+
+                                              if (!myDir.exists()) {
+                                                  myDir.mkdirs();
+                                              }
+
+                                              String name = new Date().toString() + ".jpg";
+                                              myDir = new File(myDir, name);
+                                              FileOutputStream out = new FileOutputStream(myDir);
+                                              bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+
+                                              out.flush();
+                                              out.close();
+                                          } catch(Exception e){
+                                              // some action
+                                          }
+                                      }
+
+                                      @Override
+                                      public void onBitmapFailed(Drawable errorDrawable) {
+                                      }
+
+                                      @Override
+                                      public void onPrepareLoad(Drawable placeHolderDrawable) {
+                                      }
+                                  }
+                            );
+                    
 
 
 
